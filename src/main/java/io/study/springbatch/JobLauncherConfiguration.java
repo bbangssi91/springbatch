@@ -27,7 +27,12 @@ public class JobLauncherConfiguration {
     @Bean
     public Step step1() {
         return stepBuilderFactory.get("step1")
-            .tasklet((stepContribution, chunkContext) -> RepeatStatus.FINISHED)
+            .tasklet((stepContribution, chunkContext) -> {
+                // async 처리를 확인하기 위해 의도적으로 5초간 쓰레드 sleep
+                Thread.sleep(5000);
+
+                return RepeatStatus.FINISHED;
+            })
             .build();
     }
 
