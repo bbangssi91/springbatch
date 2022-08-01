@@ -20,31 +20,11 @@ public class JobConfiguration {
 
     @Bean
     public Job BatchJob(){
-        System.out.println("batchJob 실행");
         return jobBuilderFactory.get("batchJob")
                 .start(step1())
                 .next(step2())
+                .validator(new CustomJobParametersValidator())
                 .build();
-    }
-
-    @Bean
-    public Job BatchJob2(){
-        System.out.println("batchJob2 실행");
-        return jobBuilderFactory.get("batchJob2")
-                .start(flow())
-                .next(step5())
-                .end()
-                .build();
-    }
-
-    @Bean
-    public Flow flow(){
-        FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("flow");
-        flowBuilder.start(step3())
-                .next(step4())
-                .end();
-
-        return flowBuilder.build();
     }
 
     @Bean
@@ -65,39 +45,6 @@ public class JobConfiguration {
                 .tasklet((stepContribution, chunkContext) -> {
 
                     System.out.println("step2");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step3() {
-        return stepBuilderFactory.get("step3")
-                .tasklet((stepContribution, chunkContext) -> {
-
-                    System.out.println("step3");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step4() {
-        return stepBuilderFactory.get("step4")
-                .tasklet((stepContribution, chunkContext) -> {
-
-                    System.out.println("step4");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step5() {
-        return stepBuilderFactory.get("step5")
-                .tasklet((stepContribution, chunkContext) -> {
-
-                    System.out.println("step5");
                     return RepeatStatus.FINISHED;
                 })
                 .build();
