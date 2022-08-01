@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
-public class JobLauncherConfiguration {
+public class JobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -28,8 +28,8 @@ public class JobLauncherConfiguration {
     public Step step1() {
         return stepBuilderFactory.get("step1")
             .tasklet((stepContribution, chunkContext) -> {
-                // async 처리를 확인하기 위해 의도적으로 5초간 쓰레드 sleep
-                Thread.sleep(5000);
+
+                System.out.println("step1");
 
                 return RepeatStatus.FINISHED;
             })
@@ -39,7 +39,11 @@ public class JobLauncherConfiguration {
     @Bean
     public Step step2() {
         return stepBuilderFactory.get("step2")
-                .tasklet((stepContribution, chunkContext) -> RepeatStatus.FINISHED)
+                .tasklet((stepContribution, chunkContext) -> {
+
+                    System.out.println("step2");
+                    return RepeatStatus.FINISHED;
+                })
                 .build();
     }
 
